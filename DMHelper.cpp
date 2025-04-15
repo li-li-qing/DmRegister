@@ -1,6 +1,6 @@
-// �ļ�: DMHelper.cpp
-// ���: ʵ�ִ�Į������̰߳�ȫ��װ
-// ��ϸ: ʵ��ͨ����ע�᷽ʽ��̬���� dm.dll ����ȡ Idmsoft �ӿڶ����ṩ�̰߳�ȫ�ĵ�����ȡ���ͷŷ���
+﻿// 文件: DMHelper.cpp
+// 简介: 实现大漠插件的线程安全封装
+// 详细: 实现通过免注册方式动态加载 dm.dll 并获取 Idmsoft 接口对象，提供线程安全的单例获取及释放方法
 
 #include "pch.h"
 #include "DMHelper.h"
@@ -9,9 +9,9 @@ Idmsoft* CDMHelper::m_pDm = nullptr;
 CRITICAL_SECTION CDMHelper::m_cs;
 bool CDMHelper::m_bInit = false;
 
-// �ļ�: DMHelper.cpp
-// ���: ��ʼ���߳�ͬ����Դ
-// ��ϸ: ��ʼ�� Critical Section����֤���������̰߳�ȫ����ִ��һ��
+// 文件: DMHelper.cpp
+// 简介: 初始化线程同步资源
+// 详细: 初始化 Critical Section，保证后续访问线程安全，仅执行一次
 void CDMHelper::Init()
 {
 	if (!m_bInit)
@@ -21,9 +21,9 @@ void CDMHelper::Init()
 	}
 }
 
-// �ļ�: DMHelper.cpp
-// ���: ��ȡ��Į�����������
-// ��ϸ: ��̬���� dm.dll����ȡ DllGetClassObject ������ͨ�� COM �ӿڴ��� Idmsoft ʵ�����̰߳�ȫ
+// 文件: DMHelper.cpp
+// 简介: 获取大漠插件单例对象
+// 详细: 动态加载 dm.dll，获取 DllGetClassObject 函数，通过 COM 接口创建 Idmsoft 实例，线程安全
 Idmsoft* CDMHelper::GetInstance()
 {
 	Init();
@@ -54,9 +54,9 @@ Idmsoft* CDMHelper::GetInstance()
 	return m_pDm;
 }
 
-// �ļ�: DMHelper.cpp
-// ���: �ͷŴ�Į�������
-// ��ϸ: ��ղ��ͷŴ�Į����� COM ʵ���������ڳ����˳�ʱ�������������̰߳�ȫ
+// 文件: DMHelper.cpp
+// 简介: 释放大漠插件对象
+// 详细: 清空并释放大漠插件的 COM 实例，适用于程序退出时的清理工作，线程安全
 void CDMHelper::ReleaseInstance()
 {
 	EnterCriticalSection(&m_cs);
