@@ -2,11 +2,13 @@
 下载以下文件,创建好MFC工程文件,然后把下载的文件拖到源目录里面
 
 在你需要使用的文件中添加#include "DMHelper.h" 头文件
-创建一个对象,并且调用初始化
-Idmsoft* pdm = CDMHelper::GetInstance();
+
 
 就可以直接使用里面的功能了
 记得要登陆
+
+// 自己封装的方便使用大漠插件的函数
+CDMHelper DMHelper;
 
 BOOL CArcheAgeLLQDlg::OnInitDialog()
 {
@@ -39,7 +41,7 @@ BOOL CArcheAgeLLQDlg::OnInitDialog()
 
 
 	// 初始化大漠对象
-	Idmsoft* pdm = CDMHelper::GetInstance();
+	Idmsoft* pdm = DMHelper.GetDm();
 	if (pdm == nullptr)
 	{
 		AfxMessageBox(_T("大漠对象创建失败"));
