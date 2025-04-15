@@ -1,2 +1,2 @@
 # CPPCreateDMDLL
- C++免注册大漠插件
+ C++免注册大漠插件.
