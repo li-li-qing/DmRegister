@@ -1,6 +1,6 @@
 ﻿// 文件: DMHelper.h
-// 简介: 声明大漠插件封装类接口
-// 详细: 提供线程安全的获取大漠对象实例方法，以及释放大漠对象的接口，供 MFC 项目调用
+// 简介: 定义封装大漠插件的工具类
+// 详细: 以对象方式使用大漠插件功能，提供初始化、资源路径设置、字库加载等常用接口
 
 #pragma once
 #include "dm.tlh"
@@ -10,22 +10,30 @@ class CDMHelper
 {
 public:
 	// 文件: DMHelper.h
-	// 简介: 获取大漠插件单例对象
-	// 详细: 返回线程安全的 Idmsoft 实例，首次调用时自动加载 dm.dll 并创建实例
-	static Idmsoft* GetInstance();
+	// 简介: 构造函数，创建大漠插件对象
+	// 详细: 自动加载 dm.dll 并初始化大漠插件接口
+	CDMHelper();
 
 	// 文件: DMHelper.h
-	// 简介: 释放大漠插件对象
-	// 详细: 释放 Idmsoft 指针资源，适用于程序退出或需重建对象时调用
-	static void ReleaseInstance();
+	// 简介: 析构函数
+	// 详细: 释放大漠插件对象资源
+	~CDMHelper();
+
+	// 文件: DMHelper.h
+	// 简介: 获取大漠插件接口指针
+	// 详细: 返回当前对象中初始化好的 Idmsoft 接口指针
+	Idmsoft* GetDm();
+
+	// 文件: DMHelper.h
+	// 简介: 设置大漠资源路径
+	// 详细: 设置图片、字体资源的根路径，支持相对路径，如 ".\\Ocr"
+	bool SetDmResourcePath(const CString& path);
+
+	// 文件: DMHelper.h
+	// 简介: 设置大漠字体库
+	// 详细: 指定字库槽位及字体文件名，如 "font\\num.font"
+	bool SetFontDict(int index, const CString& fontFile);
 
 private:
-	static Idmsoft* m_pDm;          // 大漠对象指针
-	static CRITICAL_SECTION m_cs;  // 临界区，用于线程保护
-	static bool m_bInit;            // 是否已初始化
-
-	// 文件: DMHelper.h
-	// 简介: 初始化内部状态
-	// 详细: 初始化临界区，确保线程安全，仅在首次调用时执行一次
-	static void Init();
+	Idmsoft* m_pDm; // 大漠插件接口指针
 };
